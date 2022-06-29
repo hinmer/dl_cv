@@ -15,8 +15,8 @@ def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("using {} device.".format(device))
 
-    batch_size = 16
-    epochs = 5
+    batch_size = 64
+    epochs = 20
 
     data_transform = {
         "train": transforms.Compose([transforms.RandomResizedCrop(224),

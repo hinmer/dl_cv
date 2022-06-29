@@ -5,7 +5,7 @@ import torch.nn.functional as F
 class LeNet(nn.Module):
     def __init__(self):
         super(LeNet, self).__init__()
-        self.conv1 = nn.Conv2d(3, 16, 5)
+        self.conv1 = nn.Conv2d(3, 16, 5)#卷积层
         self.pool1 = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(16, 32, 5)
         self.pool2 = nn.MaxPool2d(2, 2)
@@ -23,5 +23,9 @@ class LeNet(nn.Module):
         x = F.relu(self.fc2(x))      # output(84)
         x = self.fc3(x)              # output(10)
         return x
-
-
+"""调试"""
+# import torch
+# input1=torch.rand([32,3,32,32])#banch ch hi wi
+# model=LeNet()
+# print(model)
+# input=model(input1)

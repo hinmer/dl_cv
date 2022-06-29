@@ -16,8 +16,8 @@ def main():
     print("using {} device.".format(device))
 
     data_transform = {
-        "train": transforms.Compose([transforms.RandomResizedCrop(224),
-                                     transforms.RandomHorizontalFlip(),
+        "train": transforms.Compose([transforms.RandomResizedCrop(224),#随机剪裁
+                                     transforms.RandomHorizontalFlip(),#随机反转
                                      transforms.ToTensor(),
                                      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]),
         "val": transforms.Compose([transforms.Resize((224, 224)),

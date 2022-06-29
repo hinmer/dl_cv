@@ -12,12 +12,12 @@ class ActivationsAndGradients:
         self.activations = []
         self.reshape_transform = reshape_transform
         self.handles = []
-        for target_layer in target_layers:
+        for target_layer in target_layers:  # 注册传播信息
             self.handles.append(
-                target_layer.register_forward_hook(
+                target_layer.register_forward_hook(  # 注册正向传播，用于传递给self.save_activation
                     self.save_activation))
             # Backward compatibility with older pytorch versions:
-            if hasattr(target_layer, 'register_full_backward_hook'):
+            if hasattr(target_layer, 'register_full_backward_hook'):  # 注册反向传播，用于传递给self.save_gradient
                 self.handles.append(
                     target_layer.register_full_backward_hook(
                         self.save_gradient))
@@ -26,7 +26,7 @@ class ActivationsAndGradients:
                     target_layer.register_backward_hook(
                         self.save_gradient))
 
-    def save_activation(self, module, input, output):
+    def save_activation(self, module, input, output):  # 获得当前层结构的输出（可以获得多个层）
         activation = output
         if self.reshape_transform is not None:
             activation = self.reshape_transform(activation)
@@ -37,7 +37,7 @@ class ActivationsAndGradients:
         grad = grad_output[0]
         if self.reshape_transform is not None:
             grad = self.reshape_transform(grad)
-        self.gradients = [grad.cpu().detach()] + self.gradients
+        self.gradients = [grad.cpu().detach()] + self.gradients  # 梯度信息高层到底层
 
     def __call__(self, x):
         self.gradients = []
@@ -91,7 +91,7 @@ class GradCAM:
         width, height = input_tensor.size(-1), input_tensor.size(-2)
         return width, height
 
-    def compute_cam_per_layer(self, input_tensor):
+    def compute_cam_per_layer(self, input_tensor):  # 提取信息
         activations_list = [a.cpu().data.numpy()
                             for a in self.activations_and_grads.activations]
         grads_list = [g.cpu().data.numpy()
@@ -101,7 +101,7 @@ class GradCAM:
         cam_per_target_layer = []
         # Loop over the saliency image from every layer
 
-        for layer_activations, layer_grads in zip(activations_list, grads_list):
+        for layer_activations, layer_grads in zip(activations_list, grads_list):  # 遍历
             cam = self.get_cam_image(layer_activations, layer_grads)
             cam[cam < 0] = 0  # works like mute the min-max scale in the function of scale_cam_image
             scaled = self.scale_cam_image(cam, target_size)
@@ -116,7 +116,7 @@ class GradCAM:
         return self.scale_cam_image(result)
 
     @staticmethod
-    def scale_cam_image(cam, target_size=None):
+    def scale_cam_image(cam, target_size=None):  # 后处理
         result = []
         for img in cam:
             img = img - np.min(img)

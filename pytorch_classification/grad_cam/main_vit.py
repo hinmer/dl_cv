@@ -8,7 +8,7 @@ from utils import GradCAM, show_cam_on_image, center_crop_img
 from vit_model import vit_base_patch16_224
 
 
-class ReshapeTransform:
+class ReshapeTransform:  # 序列变为图片
     def __init__(self, model):
         input_size = model.patch_embed.img_size
         patch_size = model.patch_embed.patch_size
@@ -18,7 +18,7 @@ class ReshapeTransform:
     def __call__(self, x):
         # remove cls token and reshape
         # [batch_size, num_tokens, token_dim]
-        result = x[:, 1:, :].reshape(x.size(0),
+        result = x[:, 1:, :].reshape(x.size(0),  # classtoken 去除
                                      self.h,
                                      self.w,
                                      x.size(2))

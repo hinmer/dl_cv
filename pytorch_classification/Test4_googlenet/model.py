@@ -133,7 +133,7 @@ class Inception(nn.Module):
         branch4 = self.branch4(x)
 
         outputs = [branch1, branch2, branch3, branch4]
-        return torch.cat(outputs, 1)
+        return torch.cat(outputs, 1)#合并函数 合并的列标 和 合并的维度
 
 
 class InceptionAux(nn.Module):

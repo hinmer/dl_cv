@@ -10,7 +10,7 @@ from utils import GradCAM, show_cam_on_image, center_crop_img
 
 def main():
     model = models.mobilenet_v3_large(pretrained=True)
-    target_layers = [model.features[-1]]
+    target_layers = [model.features[-1]]  # last layer
 
     # model = models.vgg16(pretrained=True)
     # target_layers = [model.features]
@@ -28,7 +28,7 @@ def main():
                                          transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
     # load image
     img_path = "both.png"
-    assert os.path.exists(img_path), "file: '{}' dose not exist.".format(img_path)
+    assert os.path.exists(img_path), "file: '{}' dose not exist.".format(img_path)  # 那一层
     img = Image.open(img_path).convert('RGB')
     img = np.array(img, dtype=np.uint8)
     # img = center_crop_img(img, 224)
@@ -39,8 +39,8 @@ def main():
     # [C, H, W] -> [N, C, H, W]
     input_tensor = torch.unsqueeze(img_tensor, dim=0)
 
-    cam = GradCAM(model=model, target_layers=target_layers, use_cuda=False)
-    target_category = 281  # tabby, tabby cat
+    cam = GradCAM(model=model, target_layers=target_layers, use_cuda=True)
+    target_category = 281  # tabby, tabby cat 感兴趣的目标
     # target_category = 254  # pug, pug-dog
 
     grayscale_cam = cam(input_tensor=input_tensor, target_category=target_category)

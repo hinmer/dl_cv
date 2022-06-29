@@ -68,7 +68,7 @@ def main(args):
         weights_dict = torch.load(args.weights, map_location=device)
         # 删除不需要的权重
         del_keys = ['head.weight', 'head.bias'] if model.has_logits \
-            else ['pre_logits.fc.weight', 'pre_logits.fc.bias', 'head.weight', 'head.bias']
+            else ['norm.weight', 'norm.bias', 'head.weight', 'head.bias']
         for k in del_keys:
             del weights_dict[k]
         print(model.load_state_dict(weights_dict, strict=False))
@@ -124,7 +124,7 @@ if __name__ == '__main__':
     # 数据集所在根目录
     # https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz
     parser.add_argument('--data-path', type=str,
-                        default="/data/flower_photos")
+                        default="/home/hinmer/PycharmProjects/cv/deep-learning-for-image-processing/data_set/flower_data/flower_photos/")
     parser.add_argument('--model-name', default='', help='create model name')
 
     # 预训练权重路径，如果不想载入就设置为空字符

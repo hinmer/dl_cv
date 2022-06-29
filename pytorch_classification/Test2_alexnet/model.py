@@ -5,9 +5,9 @@ import torch
 class AlexNet(nn.Module):
     def __init__(self, num_classes=1000, init_weights=False):
         super(AlexNet, self).__init__()
-        self.features = nn.Sequential(
-            nn.Conv2d(3, 48, kernel_size=11, stride=4, padding=2),  # input[3, 224, 224]  output[48, 55, 55]
-            nn.ReLU(inplace=True),
+        self.features = nn.Sequential(# 方便选择
+            nn.Conv2d(3, 48, kernel_size=11, stride=4, padding=2),  # input[3, 224, 224]  output[48, 55, 55] tuple:1,2 up down 1 list 0 left right 2 liet 0
+            nn.ReLU(inplace=True),#计算力换内存
             nn.MaxPool2d(kernel_size=3, stride=2),                  # output[48, 27, 27]
             nn.Conv2d(48, 128, kernel_size=5, padding=2),           # output[128, 27, 27]
             nn.ReLU(inplace=True),
@@ -25,9 +25,9 @@ class AlexNet(nn.Module):
             nn.Linear(128 * 6 * 6, 2048),
             nn.ReLU(inplace=True),
             nn.Dropout(p=0.5),
-            nn.Linear(2048, 2048),
+            nn.Linear(2048, 4096),
             nn.ReLU(inplace=True),
-            nn.Linear(2048, num_classes),
+            nn.Linear(4096, num_classes),
         )
         if init_weights:
             self._initialize_weights()

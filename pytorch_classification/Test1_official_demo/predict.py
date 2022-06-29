@@ -3,7 +3,7 @@ import torchvision.transforms as transforms
 from PIL import Image
 
 from model import LeNet
-
+"""预测模型"""
 
 def main():
     transform = transforms.Compose(

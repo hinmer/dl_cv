@@ -77,7 +77,8 @@ def main():
     # pata = list(net.parameters())
     optimizer = optim.Adam(net.parameters(), lr=0.0002)
 
-    epochs = 10
+    epochs = 30
+
     save_path = './AlexNet.pth'
     best_acc = 0.0
     train_steps = len(train_loader)
